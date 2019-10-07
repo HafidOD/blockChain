@@ -295,17 +295,16 @@ def new_transaction():
 @app.route('/hashes', methods=['POST'])
 def ahashes():
     values = request.get_json(force=True)
-    required = ['max']
-    if not all(k in values for k in required):
-        return 'Missing values', 400
-
-    if(values.get('max') > len(blockchain.chain)):
+    leng = values.get('max')
+    if leng is None:
+        return "Error: Ingresa un valor", 400
+    
+    if(leng > len(blockchain.chain)):
         return 'El valor es mas grande que el numero de bloques', 500
 
     return jsonify(
-         blockchain.hashes(
-             values.get('max')
-    )), 200
+         blockchain.hashes(leng)
+         ), 200
 
 @app.route('/chain', methods=['GET'])
 def full_chain():

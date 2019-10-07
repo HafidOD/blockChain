@@ -20,7 +20,6 @@ class Blockchain:
         self.new_block(previous_hash='1', proof=100)
 
     def addNodeList(self, address):
-        #parsed_url = urlparse(address)
         self.listnode.append(address)
 
     def register_node(self, address):
@@ -29,7 +28,7 @@ class Blockchain:
 
         :param address: Address of node. Eg. 'http://192.168.0.5:5000'
         """
-
+        #valida si la direccion esta en la lista autorizada
         if address in self.listnode:
             parsed_url = urlparse(address)
             if parsed_url.netloc:
@@ -147,7 +146,6 @@ class Blockchain:
         return self.last_block['index'] + 1
 
     def hashes(self, max):
-
         current_index = 0
         lenChain = max
         arrHashes = []
@@ -157,14 +155,12 @@ class Blockchain:
 
             arrHashes.append({
                 'Block': current_index,
-                'hash': self.hash(block)
-                
+                'hash': self.hash(block) 
             })
 
             current_index += 1
 
         return arrHashes
-
 
     @property
     def last_block(self):
@@ -268,7 +264,7 @@ def addNodes():
 
     response = {
         'message': 'New nodes have been added',
-        #'total_nodes': blockchain.listnode,
+        'list_authorized_nodes': blockchain.listnode,
     }
     return jsonify(response), 201
 
